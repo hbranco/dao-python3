@@ -7,9 +7,11 @@ db = 'mkt2'
 banco = Dao(host, user, password, db)
 # banco.__select('a','b','c')
 
-result = banco.select("*", "mkt2.usuario")
 
-dados = "'1','emaddssadasil','sdasdsadsadsadadenha'"
-print(dados)
+dados = "'1','joão','Ç^~; . , '"
+# print(dados)
 result2 = banco.insert("pais_id, usuario_email, usuario_senha", "mkt2.usuario", dados)
 print(result2)
+
+result = banco.select("*", "mkt2.usuario")
+print(result)

@@ -10,7 +10,6 @@ class Dao:
         self.password = password
         self.db = db
         self.db_conexao = self.__connect(host, user, password, db)
-        # self.select = self.__connect(campos, tabela, condicao)
         pass
 
     @staticmethod
@@ -26,7 +25,7 @@ class Dao:
         :return: connection
         '''
         try:
-            connection = pymysql.connect(host, user, password, db, autocommit=False, connect_timeout=10)
+            connection = pymysql.connect(host, user, password, db, autocommit=False, connect_timeout=10, charset='utf8')
             return connection
         except pymysql.err.MySQLError as e:
             print(e)
@@ -92,10 +91,29 @@ class Dao:
 
         with self.db_conexao.cursor() as cursor:
             try:
-                query_deleta = """ DELETE FROM {0} WHERE {1})""".format(tabela, condicao)
+                query_deleta = """ DELETE FROM {0} WHERE {1}""".format(tabela, condicao)
                 print(query_deleta)
                 cursor.execute(query_deleta)
                 self.db_conexao.commit()
             except pymysql.MySQLError as e:
                 print(e)
                 print("Erro ao deletar do banco")
+
+    def update(self, tabela, campos_dados, condicao):
+        '''
+        Metodo para fazer updade de um registo no banco
+        :param tabela: tabela a ter o update
+        :param campos_dados: campos a serem atualizados
+        :param condicao: condição de atualização
+        :return:
+        '''
+        with self.db_conexao.cursor() as cursor:
+            try:
+                query_inserir = """ UPDATE {0} SET {1} WHERE {2}""".format(tabela, campos_dados, condicao)
+                print(query_inserir)
+                cursor.execute(query_inserir)
+                self.db_conexao.commit()
+                return cursor.lastrowid
+            except pymysql.MySQLError as e:
+                print(e)
+                print("Erro ao atulizar do banco")
