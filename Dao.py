@@ -117,3 +117,31 @@ class Dao:
             except pymysql.MySQLError as e:
                 print(e)
                 print("Erro ao atulizar do banco")
+
+
+    def execute_arbitraria(self, query, type):
+        '''
+        metodo para executar uma query arbitraria no banco..
+        uma query mais complexa ou algo não previsto
+        :param query: query a ser executada
+        :param type: tipo da operação(SELECT,UPDATE,DELETE,REPLACE)
+        :return: depende....
+        '''
+
+        print(query, type)
+
+
+        if type == "insert":
+            with self.db_conexao.cursor() as cursor:
+                try:
+                    cursor.execute(query)
+                    self.db_conexao.commit()
+                    return cursor.lastrowid
+                    pass
+                except pymysql.MySQLError as e:
+                    print(e)
+                    print("Erro ao utilizar o metodo execute_arbitraria()")
+
+
+
+        pass
